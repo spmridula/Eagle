@@ -1,0 +1,156 @@
+name: "🐛 Bug Report"
+description: Report a bug or unexpected behavior in Eagle.
+title: "[Bug]: "
+labels: ["bug"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thank you for reporting a bug! 
+        Please fill out the sections below so we can reproduce and fix the issue quickly.
+        Before opening a new issue, search [existing issues](https://github.com/Devnil434/Eagle-Real-Time-Semantic-Surveillance-using-Detection-Tracking-Reasoning/issues) to avoid duplicates.
+
+  # ── Which part of Eagle is affected? ──────────────────────────────────────────
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Which service or layer does this bug affect?
+      options:
+        - "Detection (YOLOv8/v9 — services/detection/)"
+        - "Tracking (ByteTrack / DeepSORT — services/tracking/)"
+        - "Temporal Memory (Redis buffer — services/memory/)"
+        - "VLM Captioning (LLaVA-Next — services/reasoning/vlm.py)"
+        - "LLM Reasoning (services/reasoning/llm.py)"
+        - "Backend API (FastAPI — apps/backend/)"
+        - "Frontend Dashboard (Next.js — apps/frontend/)"
+        - "Schemas / Libs (libs/)"
+        - "Infrastructure / Docker (infra/)"
+        - "CI/CD / GitHub Actions (.github/)"
+        - "Documentation"
+        - "Other / Not sure"
+    validations:
+      required: true
+
+  # ── Describe the bug ─────────────────────────────────────────────────────────
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: "When I run the detection service on a sample video, the bounding boxes are not drawn..."
+    validations:
+      required: true
+
+  # ── Steps to reproduce ──────────────────────────────────────────────────────
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Exact steps to reproduce the behavior.
+      value: |
+        1. 
+        2. 
+        3. 
+        4. 
+    validations:
+      required: true
+
+  # ── Expected vs Actual ──────────────────────────────────────────────────────
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened instead.
+    validations:
+      required: true
+
+  # ── Environment ─────────────────────────────────────────────────────────────
+  - type: dropdown
+    id: python-version
+    attributes:
+      label: Python Version
+      options:
+        - "3.11"
+        - "3.12"
+        - "3.13"
+        - "Other (specify in Additional Context)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - "Ubuntu / Debian"
+        - "macOS"
+        - "Windows 10"
+        - "Windows 11"
+        - "WSL2"
+        - "Docker container"
+        - "Other (specify in Additional Context)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Inference Device
+      description: What hardware are you running inference on?
+      options:
+        - "CPU"
+        - "NVIDIA GPU (CUDA)"
+        - "Apple Silicon (MPS)"
+        - "Not applicable"
+    validations:
+      required: false
+
+  # ── Error log ───────────────────────────────────────────────────────────────
+  - type: textarea
+    id: error-log
+    attributes:
+      label: Error Log / Traceback
+      description: Paste the full error output or traceback. This will be auto-formatted as code.
+      render: shell
+    validations:
+      required: false
+
+  # ── Screenshots / Video ────────────────────────────────────────────────────
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or Recordings
+      description: If applicable, add screenshots or screen recordings to help explain the problem.
+    validations:
+      required: false
+
+  # ── Additional context ─────────────────────────────────────────────────────
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem (config changes, model used, video source, etc.).
+    validations:
+      required: false
+
+  # ── Code of Conduct ────────────────────────────────────────────────────────
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have tested with the latest version of the `main` branch.
+          required: false

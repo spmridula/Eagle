@@ -1,0 +1,109 @@
+name: "💡 Feature Request"
+description: Suggest a new feature or improvement for Eagle.
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request 🚀
+        Thank you for helping improve Eagle! Please describe your idea clearly so maintainers and contributors can evaluate and implement it.
+        Before opening a new request, search [existing issues](https://github.com/Devnil434/Eagle-Real-Time-Semantic-Surveillance-using-Detection-Tracking-Reasoning/issues) to avoid duplicates.
+
+  # ── Problem statement ───────────────────────────────────────────────────────
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? Why is it needed?
+      placeholder: "Currently Eagle cannot ... which makes it difficult to ..."
+    validations:
+      required: true
+
+  # ── Proposed solution ───────────────────────────────────────────────────────
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe how you would like this feature to work.
+      placeholder: "Add a new endpoint / module / config option that ..."
+    validations:
+      required: true
+
+  # ── Affected component ─────────────────────────────────────────────────────
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Which part of Eagle would this feature touch?
+      multiple: true
+      options:
+        - "Detection (YOLOv8/v9 — services/detection/)"
+        - "Tracking (ByteTrack / DeepSORT — services/tracking/)"
+        - "Temporal Memory (Redis buffer — services/memory/)"
+        - "VLM Captioning (LLaVA-Next — services/reasoning/vlm.py)"
+        - "LLM Reasoning (services/reasoning/llm.py)"
+        - "Backend API (FastAPI — apps/backend/)"
+        - "Frontend Dashboard (Next.js — apps/frontend/)"
+        - "Schemas / Libs (libs/)"
+        - "Infrastructure / Docker (infra/)"
+        - "CI/CD / GitHub Actions (.github/)"
+        - "Documentation"
+        - "New component / Cross-cutting"
+    validations:
+      required: true
+
+  # ── Difficulty estimate ────────────────────────────────────────────────────
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Estimated Difficulty
+      description: How complex do you think this change would be?
+      options:
+        - "🟢 Beginner — Small, self-contained change"
+        - "🟡 Intermediate — Requires understanding of one service"
+        - "🔴 Advanced — Spans multiple services or needs ML expertise"
+        - "Not sure"
+    validations:
+      required: true
+
+  # ── Alternatives considered ────────────────────────────────────────────────
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+    validations:
+      required: false
+
+  # ── Additional context ─────────────────────────────────────────────────────
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context, mockups, references, or links that would help (papers, docs, similar projects).
+    validations:
+      required: false
+
+  # ── Contribution ───────────────────────────────────────────────────────────
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you like to work on this feature yourself?
+      options:
+        - label: I would like to implement this feature and submit a PR.
+          required: false
+
+  # ── Checklist ──────────────────────────────────────────────────────────────
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have read the [CONTRIBUTING.md](https://github.com/Devnil434/Eagle-Real-Time-Semantic-Surveillance-using-Detection-Tracking-Reasoning/blob/main/CONTRIBUTING.md) guidelines.
+          required: true
