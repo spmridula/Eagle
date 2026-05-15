@@ -44,9 +44,10 @@ class SceneGraphBuilder:
         return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
     def build_graph(self):
+        
 
-       
-
+        self.graph.clear()
+        
         for zone in DEFAULT_ZONES:
 
             self.graph.add_node(
@@ -105,33 +106,18 @@ class SceneGraphBuilder:
                         relation="NEAR",
                         distance=round(dist, 2)
                     )
+                person_node = None
+                object_node = None
+                if det1.label == "person" and det2.label in INTERACTION_OBJECTS:
+                    person_node, object_node = node1, node2
+                elif det2.label == "person" and det1.label in INTERACTION_OBJECTS:
+                    person_node, object_node = node2, node1
+                if person_node and dist < 60:
+                    self.graph.add_edge(person_node,object_node, relation="INTERACTING_WITH")
 
+                elif person_node and 60 <= dist < 80:
+                    self.graph.add_edge(person_node,object_node,relation="HOLDING")
                
 
-                if (
-                    det1.label == "person"
-                    and det2.label in INTERACTION_OBJECTS
-                    and 60 <= dist < 80
-                ):
-
-                    self.graph.add_edge(
-                        node1,
-                        node2,
-                        relation="HOLDING"
-                    )
-
                 
-
-                if (
-                    det1.label == "person"
-                    and det2.label in INTERACTION_OBJECTS
-                    and dist < 60
-                ):
-
-                    self.graph.add_edge(
-                        node1,
-                        node2,
-                        relation="INTERACTING_WITH"
-                    )
-
         return self.graph
