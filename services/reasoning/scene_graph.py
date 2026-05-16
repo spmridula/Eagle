@@ -1,9 +1,10 @@
 # services/reasoning/scene_graph.py
 
 import math
+
 import networkx as nx
 
-
+from libs.observability.metrics import reasoning_triggers_total
 from services.detection.zones import DEFAULT_ZONES
 
 INTERACTION_OBJECTS = [
@@ -44,10 +45,12 @@ class SceneGraphBuilder:
         return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
     def build_graph(self):
-        
+
+        reasoning_triggers_total.inc()
 
         self.graph.clear()
-        
+
+        # Add zone nodes
         for zone in DEFAULT_ZONES:
 
             self.graph.add_node(
@@ -55,10 +58,9 @@ class SceneGraphBuilder:
                 type="zone"
             )
 
-       
-
         detections = self.det_frame.detections
 
+        # Add detection nodes
         for idx, det in enumerate(detections):
 
             node_name = f"{det.label}_{idx}"
@@ -69,8 +71,7 @@ class SceneGraphBuilder:
                 center=det.center
             )
 
-          
-
+            # Zone relationships
             for zone_name in det.zones_present:
 
                 self.graph.add_edge(
@@ -79,8 +80,7 @@ class SceneGraphBuilder:
                     relation="INSIDE"
                 )
 
-        
-
+        # Object relationships
         for i in range(len(detections)):
 
             for j in range(i + 1, len(detections)):
@@ -96,8 +96,7 @@ class SceneGraphBuilder:
                     det2.center
                 )
 
-               
-
+                # NEAR relationship
                 if dist < 150:
 
                     self.graph.add_edge(
@@ -106,18 +105,43 @@ class SceneGraphBuilder:
                         relation="NEAR",
                         distance=round(dist, 2)
                     )
+
                 person_node = None
                 object_node = None
-                if det1.label == "person" and det2.label in INTERACTION_OBJECTS:
-                    person_node, object_node = node1, node2
-                elif det2.label == "person" and det1.label in INTERACTION_OBJECTS:
-                    person_node, object_node = node2, node1
+
+                # Interaction detection
+                if (
+                    det1.label == "person"
+                    and det2.label in INTERACTION_OBJECTS
+                ):
+
+                    person_node = node1
+                    object_node = node2
+
+                elif (
+                    det2.label == "person"
+                    and det1.label in INTERACTION_OBJECTS
+                ):
+
+                    person_node = node2
+                    object_node = node1
+
+                # INTERACTING_WITH
                 if person_node and dist < 60:
-                    self.graph.add_edge(person_node,object_node, relation="INTERACTING_WITH")
 
+                    self.graph.add_edge(
+                        person_node,
+                        object_node,
+                        relation="INTERACTING_WITH"
+                    )
+
+                # HOLDING
                 elif person_node and 60 <= dist < 80:
-                    self.graph.add_edge(person_node,object_node,relation="HOLDING")
-               
 
-                
+                    self.graph.add_edge(
+                        person_node,
+                        object_node,
+                        relation="HOLDING"
+                    )
+
         return self.graph
