@@ -14,6 +14,7 @@ SHELL := /bin/bash
 install:
 	@echo "Installing backend dependencies..."
 	pip install -r services/detection/requirements.txt
+	pip install -r requirements-dev.txt
 	@echo "Done: backend dependencies installed."
 
 # --------------------------------------------------------------------------
