@@ -17,6 +17,11 @@ class Settings(BaseSettings):
     reasoning_dwell_threshold_seconds: float = 5.0
     reasoning_cooldown_seconds: float = 5.0
 
+    # VLM / LLM provider selection.
+    # Set to "mock" for CI / offline development (no GPU or Ollama required).
+    # Future values: "ollama", "openai", "gemini".
+    vlm_provider: str = "mock"
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 
