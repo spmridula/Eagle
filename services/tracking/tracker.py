@@ -70,11 +70,13 @@ class Tracker:
         camera_id: str = "cam_01",
         event_logger: TrackEventLogger | None = None,
         reid_similarity_threshold: float = 0.85,
+        max_interpolation_gap: int = 10,  # Added with a sensible default
     ) -> None:
         self.fps = fps
         self.camera_id = camera_id
         self.max_age = max_age  # NEW
         self.REID_SIMILARITY_THRESHOLD = reid_similarity_threshold
+        self.max_interpolation_gap = max_interpolation_gap  # Fixed missing attribute
 
         self._tracker = DeepSort(
             max_age=max_age,
@@ -204,7 +206,6 @@ class Tracker:
                     # Current width and height
                     new_pos["w"] = x2 - x1
                     new_pos["h"] = y2 - y1
-                    
                 # Synthesize intermediate points and wrap them into TrajectoryPoint instances
                 interpolated_points = [
                     TrajectoryPoint(
@@ -212,11 +213,11 @@ class Tracker:
                         y=p["y"],
                         frame_id=p["frame_id"],
                         interpolated=True,
-                        **({"w": p["w"], "h": p["h"]} if "w" in p else {})
+                        w=p.get("w"),
+                        h=p.get("h")
                     )
                     for p in _interpolate_trajectory(last_pos, new_pos, gap_frames, prev.last_seen_frame + 1)
-                ]
-
+                ] 
             # Generate the current frame real point
             new_point = TrajectoryPoint(x=cx, y=cy, frame_id=self._frame_id)
             
