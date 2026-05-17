@@ -15,6 +15,7 @@ from unittest.mock import MagicMock, patch
 
 from libs.schemas.detection import DetectionFrameSchema, DetectionSchema, BoundingBox
 from libs.schemas.tracking  import TrackedFrame, TrackedObject, TrackState, TrajectoryPoint
+from services.tracking.tracker import _interpolate_trajectory
 
 
 # ── Schema unit tests (no tracker needed) ────────────────────────────────────
@@ -485,8 +486,7 @@ def test_reid_expires_after_max_age(MockDeepSort):
 
     # Should NOT restore old ID
     assert result.tracks[0].track_id == 99
-    import pytest
-from services.tracking.tracker import _interpolate_trajectory
+
 
 def test_interpolate_trajectory_success():
     """Test standard linear interpolation for a 3-frame gap including width and height scaling."""

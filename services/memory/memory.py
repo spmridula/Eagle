@@ -34,8 +34,6 @@ import logging
 import time
 from typing import Optional
 
-import numpy as np
-
 from libs.observability.metrics import redis_write_latency
 from libs.schemas.tracking import TrackLifecycleEvent, TrackState
 from services.tracking.cross_camera_reid import CrossCameraReID
@@ -69,7 +67,7 @@ class MemoryService:
     def handle_lifecycle_event(
         self,
         event: TrackLifecycleEvent,
-        embedding: Optional[np.ndarray] = None,
+        embedding: Optional["numpy.ndarray"] = None,
     ) -> Optional[str]:
         """
         Process a single lifecycle event and return the assigned global_id.
@@ -115,7 +113,7 @@ class MemoryService:
     def _handle_born(
         self,
         event: TrackLifecycleEvent,
-        embedding: Optional[np.ndarray],
+        embedding: Optional["numpy.ndarray"],
     ) -> str:
         if embedding is not None:
             reid_result = self._reid.match_or_create(
@@ -160,7 +158,7 @@ class MemoryService:
     def _handle_lost(
         self,
         event: TrackLifecycleEvent,
-        embedding: Optional[np.ndarray],
+        embedding: Optional["numpy.ndarray"],
     ) -> Optional[str]:
         record = self._load_record(event.camera_id, event.track_id)
         global_id = record.get("global_id") if record else None

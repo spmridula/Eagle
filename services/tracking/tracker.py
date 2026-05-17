@@ -178,20 +178,22 @@ class Tracker:
             dwell_secs = dwell_frames / self.fps
 
             # ── Trajectory ────────────────────────────────────────────────
-            # Get existing trajectory history
             prev_traj = prev.trajectory if prev else []
             gap_frames = 0
 
-            # Calculate the frame index gap if the track existed previously
             if prev is not None:
                 gap_frames = max(0, self._frame_id - prev.last_seen_frame - 1)
 
             interpolated_points = []
-            max_gap = self.config.get("max_interpolation_gap", 10) if hasattr(self, 'config') else 10
+            max_gap = self.max_interpolation_gap  # <-- Replaced self.config string access
 
-            # If a valid frame detection gap is discovered, trigger the interpolation loop
             if prev is not None and 0 < gap_frames <= max_gap:
-                last_pos = {"x": prev.trajectory[-1].x, "y": prev.trajectory[-1].y}
+                # Added guard condition below to prevent IndexError crashes
+                if prev.trajectory:
+                    last_pos = {"x": prev.trajectory[-1].x, "y": prev.trajectory[-1].y}
+                else:
+                    last_pos = {"x": cx, "y": cy}  # Fallback to current center coordinates
+                
                 new_pos = {"x": cx, "y": cy}
                 
                 # Check if previous data contains w and h bounding box metrics
