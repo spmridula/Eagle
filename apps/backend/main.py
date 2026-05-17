@@ -4,12 +4,12 @@ import redis
 from fastapi import FastAPI
 from fastapi.responses import Response
 from prometheus_client import generate_latest
-
+from libs.config.settings import settings
 from libs.observability.metrics import frames_processed_total
 
 app = FastAPI()
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+REDIS_URL = os.getenv("REDIS_URL", settings.REDIS_URL)
 
 try:
     r = redis.from_url(REDIS_URL)
