@@ -17,6 +17,13 @@ class Settings(BaseSettings):
     reasoning_dwell_threshold_seconds: float = 5.0
     reasoning_cooldown_seconds: float = 5.0
 
+    # Action classifier settings
+    lingering_threshold_sec: float = 10.0
+    movement_threshold_px: float = 5.0
+    near_keypad_dist_px: float = 80.0
+    keypad_center_x: float = 640.0
+    keypad_center_y: float = 360.0
+
     # Kafka Settings
     use_kafka: bool = False
     kafka_bootstrap_servers: str = "localhost:9092"

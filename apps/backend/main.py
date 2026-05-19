@@ -23,15 +23,22 @@ import json
 import logging
 import os
 
+<<<<<<< HEAD
 import redis as redis_sync
 from fastapi import FastAPI, Query
 from fastapi.responses import Response
 from prometheus_client import generate_latest
+=======
+from apps.backend.routes.zones import router as zones_router
+
+app = FastAPI()
+>>>>>>> 4d99088 (feat: adaptive anomaly baseline per zone using Welford's algorithm)
 
 from apps.backend.routes.cameras import identity_router, router as cameras_router
 from apps.backend.routes.feedback import router as feedback_router
 from libs.observability.metrics import frames_processed_total
 
+<<<<<<< HEAD
 logger = logging.getLogger(__name__)
 
 # ── App ───────────────────────────────────────────────────────────────────────
@@ -57,6 +64,23 @@ def _get_redis() -> redis_sync.Redis | None:
     """
     global _redis
     if _redis is None:
+=======
+try:
+    r = redis.from_url(REDIS_URL)
+    r.ping()
+    app.state.redis = r
+    print(f"[INFO] Connected to Redis at {REDIS_URL}")
+except (redis.RedisError, redis.ConnectionError) as e:
+    print(f"[WARN] Redis not available: {e}")
+    r = None
+
+app.include_router(zones_router)
+
+@app.get("/health")
+def health():
+    redis_status = "healthy"
+    if r is not None:
+>>>>>>> 4d99088 (feat: adaptive anomaly baseline per zone using Welford's algorithm)
         try:
             client = redis_sync.from_url(REDIS_URL, socket_connect_timeout=2)
             client.ping()
