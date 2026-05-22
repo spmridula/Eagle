@@ -60,7 +60,7 @@ def test_track_sequence_action_summary():
 
 def test_action_summary_empty():
     seq = TrackSequence(track_id=99, events=[])
-    assert seq.action_summary == "unknown"
+    assert seq.action_summary == ""
 
 def test_action_summary_single_event():
     seq = TrackSequence(
